@@ -11,5 +11,6 @@
 2. Start the app
 
    ```bash
-    npx expo start
+   cd CoffeeAlarm
+   npx expo start
    ```
