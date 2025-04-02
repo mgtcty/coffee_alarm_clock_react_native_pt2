@@ -74,7 +74,7 @@ export default function Styles() {
         selectedDayText: {
             color:theme.seperator,
         },
-        day: {
+        dayContainer: {
             width: '80%',
             alignItems: 'center',
             justifyContent: 'space-evenly',
@@ -82,6 +82,22 @@ export default function Styles() {
         dayButton: {
             padding: '5%',
             paddingBottom: '10%',
+        },
+        coffeeDateImages: {
+            width: 100,
+            height: 100
+        },
+        coffeeDateContainer:{
+            flexDirection: 'column',
+            paddingVertical:10,
+            paddingHorizontal:12,
+        },
+        coffeeDateText: {
+            color:theme.text,
+            fontSize: 15,
+        },
+        coffeeDateRo: {
+            alignItems: 'center',
         },
     })
 }

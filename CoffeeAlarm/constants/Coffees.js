@@ -4,7 +4,7 @@ import icedVietnameseCoffee from "@/assets/images/coffee/iced_vietnamese_coffee.
 import matchaAndEspressoFusion from "@/assets/images/coffee/matcha_and_espresso_fusion.png"
 import vanillaSweetCreamColdBrew from "@/assets/images/coffee/vanilla_sweet_cream_cold_brew.png"
 
-export const COFFEE_ITEM = [
+export const COFFEE_ITEMS = [
     {
         "id":1,
         "name":"Affogato",

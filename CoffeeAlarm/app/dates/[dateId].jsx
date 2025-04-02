@@ -1,4 +1,4 @@
-import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet } from "react-native";
+import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet, Image } from "react-native";
 import { useContext, useState, useEffect } from "react";
 import { DateContext } from "@/context/DateContext"
 import { ThemeContext } from "@/context/ThemeContext";
@@ -76,7 +76,6 @@ export default function Setting() {
 
 
   const dayRenderer = ({ item }) => {
-
     // update coffee date and highlight to user which day they chose
     const handleDayPress = (item) => {
       setDay(days.map(day => ({...day, set: day.id == item.id ? !day.set: false})))
@@ -96,6 +95,24 @@ export default function Setting() {
     }
   }
 
+  const coffeeDateRenderer = ({ item, isSanrioChar }) => {
+    try {
+      return (
+        <View style={styles.coffeeDateRow}>
+          <View>
+            <Text style={styles.coffeeDateText}>{ item.name }</Text>
+          </View>
+          <Image
+            source={ isSanrioChar ? SANRIO_CHAR_IMAGES[item.id-1] : COFFEE_IMAGES[item.id-1]}
+            style={styles.coffeeDateImages}
+          />
+        </View>
+      )
+    } catch (e) {
+      console.error("Error rendering coffee or date:", e)
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -110,7 +127,7 @@ export default function Setting() {
             itemLayoutAnimation={LinearTransition}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.day}
+            contentContainerStyle={styles.dayContainer}
           />
         </View>
       </View>
@@ -132,15 +149,27 @@ export default function Setting() {
       <View style={styles.middleSettingContainer}>
         <View style={styles.coffeeDateContainer}>
           <Text style={styles.text}>Coffee:</Text>
-          <Pressable>
-            <Text style={styles.text}>change to FlatList</Text>
-          </Pressable>
+          <Animated.FlatList
+            data={COFFEE_ITEMS}
+            keyExtractor={(item) => item.id.toString()}
+            itemLayoutAnimation={LinearTransition}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => coffeeDateRenderer({ item, isSanrioChar: false })}
+            contentContainerStyle={styles.coffeeDateContainer}
+          />
         </View>
         <View style={styles.coffeeDateContainer}>
           <Text style={styles.text}>Date:</Text>
-          <Pressable>
-            <Text style={styles.text}>change to FlatList</Text>
-          </Pressable>
+          <Animated.FlatList
+            data={SANRIO_CHAR_ITEMS}
+            keyExtractor={(item) => item.id.toString()}
+            itemLayoutAnimation={LinearTransition}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => coffeeDateRenderer({ item, isSanrioChar: true })}
+            contentContainerStyle={styles.coffeeDateContainer}
+          />
         </View>
       </View>
     </SafeAreaView>
