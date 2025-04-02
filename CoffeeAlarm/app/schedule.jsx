@@ -26,7 +26,8 @@ export default function Schedule() {
       return (
         <View>
           <Pressable onPress={() => handleDates(item.id)}>
-            <Text style={styles.text}>{item.id} has time of: {item.hour}:{item.minute} {item.ampm} and at day {item.day}</Text>
+            <Text style={styles.text}>{item.id} has time of: {item.hour}:{item.minute} {item.ampm} and at day {item.day} 
+               with coffee of {item.coffee} and character of {item.sanrioChar}</Text>
           </Pressable>
         </View>
       );

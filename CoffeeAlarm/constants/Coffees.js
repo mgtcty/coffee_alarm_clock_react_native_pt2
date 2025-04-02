@@ -9,26 +9,31 @@ export const COFFEE_ITEMS = [
         "id":1,
         "name":"Affogato",
         "description":"A classic Italian dessert featuring a scoop of vanilla gelato or ice cream 'drowned' in a shot of hot espresso.",
+        "selected": false
     },
     {
         "id":2,
         "name":"Iced Peppermint Mocha Latte",
         "description":"A refreshing blend of espresso, chocolate, and peppermint syrup, served over ice with milk.",
+        "selected": false
     },
     {
         "id":3,
         "name":"Iced Vietnamese Coffee",
         "description":"A bold and sweet coffee made with strong Vietnamese robusta coffee and condensed milk, served over ice.",
+        "selected": false
     },
     {
         "id":4,
         "name":"Matcha And Espresso Fusion",
         "description":"A layered drink combining earthy matcha green tea with rich espresso for a balanced caffeine boost.",
+        "selected": false
     },
     {
         "id":5,
         "name":"Vanilla Sweet Cream Cold Brew",
         "description":"Smooth cold brew coffee infused with vanilla and topped with a rich, sweet cream for a velvety finish.",
+        "selected": false
     },
 ]
 

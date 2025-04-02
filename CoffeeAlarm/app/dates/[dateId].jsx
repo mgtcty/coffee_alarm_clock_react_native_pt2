@@ -1,5 +1,5 @@
 import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet, Image } from "react-native";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { DateContext } from "@/context/DateContext"
 import { ThemeContext } from "@/context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,10 +10,19 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import { COFFEE_ITEMS, COFFEE_IMAGES } from "@/constants/Coffees"
 import { SANRIO_CHAR_ITEMS, SANRIO_CHAR_IMAGES } from "@/constants/SanrioDates"
 
+const initialDays = [
+  { name: "S", id: 0, set: true },
+  { name: "M", id: 1, set: false },
+  { name: "T", id: 2, set: false },
+  { name: "W", id: 3, set: false },
+  { name: "T", id: 4, set: false },
+  { name: "F", id: 5, set: false },
+  { name: "S", id: 6, set: false }
+];
+
 export default function Setting() {
   const { colorScheme, theme } = useContext(ThemeContext)
-  const [days, setDay] = useState([{name:'S', id:0, set:true}, {name:'M', id:1, set:false}, {name:'T', id:2, set:false}, 
-    {name:'W', id:3, set:false}, {name:'T', id:4, set:false}, {name:'F', id:5, set:false}, {name:'S', id:6, set:false}])
+  const [days, setDay] = useState(initialDays)
   const styles = Styles()
   const router = useRouter()
   const { dateId } = useLocalSearchParams()
@@ -24,38 +33,36 @@ export default function Setting() {
   // find existing coffee date or create a new one
   const existingCoffee =  hasDates ? coffeeDates.find(date => date.id.toString() == dateId) : null
 
-  const [coffeeDate, setCoffeeDate] = useState(
+  // add loading feature from local device
+
+  const [coffeeDate, setCoffeeDate] = useState(() => 
     existingCoffee || {
       id: parseInt(dateId),
-      day: 0,
+      day: null,
       hour: 2, // to change to null once feature done
       minute: 3, // to change to null once feature done
       ampm: "pm", // to change to null once feature done
-      coffee: "viet coff", // to change to null once feature done
+      coffee: null, // to change to null once feature done
       sanrioChar: "Kuromi", // to change to null once feature done
     })
 
   // add new coffee date and save to AsyncStorage
-  const addCoffeeDate = async () => {
-    try {
-      let updatedDates = []
-      // if user created a new coffee date, add it to the list else just modify the existingCoffee
-      if (existingCoffee) {
-        // find the previous date and update it
-        updatedDates = coffeeDates.map(prevDate => prevDate.id == coffeeDate.id ? coffeeDate : prevDate)
-      } else {
-        updatedDates = hasDates ? [...coffeeDates, coffeeDate] : [coffeeDate];
-        setCoffeeId(coffeeDate.id)
-      }
-      setCoffeeDates(updatedDates);
-
-      // save to AsyncStorage AFTER updating state
-      await AsyncStorage.setItem("coffeeDates", JSON.stringify(updatedDates));
-
-      router.push("/schedule");
-    } catch (e) {
-      console.error("Error saving coffee date:", e);
+  useEffect(() => {
+    if (coffeeDates.length > 0) {
+      AsyncStorage.setItem("coffeeDates", JSON.stringify(coffeeDates)).catch(e => console.error("Error saving coffee dates:", e));
     }
+  }, [coffeeDates]);
+  const addCoffeeDate = () => {
+    setCoffeeDates(prevDates => {
+      const updatedDates = existingCoffee
+        ? prevDates.map(date => date.id === coffeeDate.id ? coffeeDate : date)
+        : [...prevDates, coffeeDate];
+  
+      setCoffeeId(coffeeDate.id);
+      return updatedDates;
+    });
+
+    router.push("/schedule");
   };
 
   // (FYI) use this for debugging remove once not needed (FYI)
@@ -77,9 +84,9 @@ export default function Setting() {
 
   const dayRenderer = ({ item }) => {
     // update coffee date and highlight to user which day they chose
-    const handleDayPress = (item) => {
-      setDay(days.map(day => ({...day, set: day.id == item.id ? !day.set: false})))
-      setCoffeeDate({...coffeeDate, day:item.id})
+    const handleDayPress = (selectedItem) => {
+      setDay(prevDays => prevDays.map(day => ({...day,set: day.id === selectedItem.id ? !day.set : false})));
+      setCoffeeDate({...coffeeDate, day:selectedItem.id})
     }
 
     try {
@@ -96,22 +103,30 @@ export default function Setting() {
   }
 
   const coffeeDateRenderer = ({ item, isSanrioChar }) => {
-    try {
-      return (
-        <View style={styles.coffeeDateRow}>
-          <View>
-            <Text style={styles.coffeeDateText}>{ item.name }</Text>
-          </View>
+    // update the current coffee and character on the date
+    const handleCoffeeOrCharPress= () => {
+      setCoffeeDate(prev => ({...prev,[isSanrioChar ? "sanrioChar" : "coffee"]: item.id}))
+    }
+
+    return (
+      <View style={styles.coffeeDateRow}>
+        <View>
+          <Text style={styles.coffeeDateText}>{ item.name }</Text>
+        </View>
+        <Pressable onPress={handleCoffeeOrCharPress}>
           <Image
             source={ isSanrioChar ? SANRIO_CHAR_IMAGES[item.id-1] : COFFEE_IMAGES[item.id-1]}
             style={styles.coffeeDateImages}
           />
-        </View>
-      )
-    } catch (e) {
-      console.error("Error rendering coffee or date:", e)
-    }
+        </Pressable>
+      </View>
+    )
   }
+
+  // memoize render functions to prevent unnecessary re-renders
+  const renderDayItem = useCallback(({ item }) => dayRenderer({ item }), []);
+  const renderCoffeeItem = useCallback(({ item }) => coffeeDateRenderer({ item, isSanrioChar: false }), []);
+  const renderSanrioItem = useCallback(({ item }) => coffeeDateRenderer({ item, isSanrioChar: true }), []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -122,7 +137,7 @@ export default function Setting() {
         <View style={styles.daysContainer}>
           <Animated.FlatList
             data={days}
-            renderItem={dayRenderer}
+            renderItem={renderDayItem}
             keyExtractor={item => item.id}
             itemLayoutAnimation={LinearTransition}
             horizontal={true}
@@ -155,7 +170,7 @@ export default function Setting() {
             itemLayoutAnimation={LinearTransition}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => coffeeDateRenderer({ item, isSanrioChar: false })}
+            renderItem={renderCoffeeItem}
             contentContainerStyle={styles.coffeeDateContainer}
           />
         </View>
@@ -167,7 +182,7 @@ export default function Setting() {
             itemLayoutAnimation={LinearTransition}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => coffeeDateRenderer({ item, isSanrioChar: true })}
+            renderItem={renderSanrioItem}
             contentContainerStyle={styles.coffeeDateContainer}
           />
         </View>
