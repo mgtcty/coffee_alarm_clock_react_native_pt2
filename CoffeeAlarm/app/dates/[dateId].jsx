@@ -1,4 +1,4 @@
-import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet, Image } from "react-native";
+import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet, Image, Vibration } from "react-native";
 import { useContext, useState, useEffect, useCallback } from "react";
 import { DateContext } from "@/context/DateContext"
 import { ThemeContext } from "@/context/ThemeContext";
@@ -43,7 +43,7 @@ export default function Setting() {
       minute: 3, // to change to null once feature done
       ampm: "pm", // to change to null once feature done
       coffee: null, // to change to null once feature done
-      sanrioChar: "Kuromi", // to change to null once feature done
+      sanrioChar: null, // to change to null once feature done
     })
 
   // add new coffee date and save to AsyncStorage
@@ -53,16 +53,21 @@ export default function Setting() {
     }
   }, [coffeeDates]);
   const addCoffeeDate = () => {
-    setCoffeeDates(prevDates => {
-      const updatedDates = existingCoffee
-        ? prevDates.map(date => date.id === coffeeDate.id ? coffeeDate : date)
-        : [...prevDates, coffeeDate];
+    // check if all parameters in date are set
+    if (!Object.values(coffeeDate).some(value => value === null || value === undefined)) {
+      setCoffeeDates(prevDates => {
+        const updatedDates = existingCoffee
+          ? prevDates.map(date => date.id === coffeeDate.id ? coffeeDate : date)
+          : [...prevDates, coffeeDate];
+    
+        setCoffeeId(coffeeDate.id);
+        return updatedDates;
+      });
   
-      setCoffeeId(coffeeDate.id);
-      return updatedDates;
-    });
-
-    router.push("/schedule");
+      router.push("/schedule");
+    } else {
+      Vibration.vibrate();
+    }
   };
 
   // (FYI) use this for debugging remove once not needed (FYI)
