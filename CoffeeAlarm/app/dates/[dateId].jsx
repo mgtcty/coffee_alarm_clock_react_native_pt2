@@ -7,6 +7,8 @@ import Styles from "@/components/Styles";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter, useLocalSearchParams } from "expo-router";
+import { COFFEE_ITEMS, COFFEE_IMAGES } from "@/constants/Coffees"
+import { SANRIO_CHAR_ITEMS, SANRIO_CHAR_IMAGES } from "@/constants/SanrioDates"
 
 export default function Setting() {
   const { colorScheme, theme } = useContext(ThemeContext)
