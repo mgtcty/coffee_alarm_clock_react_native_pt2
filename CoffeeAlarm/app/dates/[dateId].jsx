@@ -1,14 +1,17 @@
-import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet, Image, Vibration } from "react-native";
-import { useContext, useState, useEffect, useCallback } from "react";
+import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet, Image, Vibration } from "react-native"
+import { TimerPicker } from "react-native-timer-picker"
+import { useContext, useState, useEffect, useCallback } from "react"
 import { DateContext } from "@/context/DateContext"
-import { ThemeContext } from "@/context/ThemeContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Styles from "@/components/Styles";
-import Animated, { LinearTransition } from "react-native-reanimated";
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { ThemeContext } from "@/context/ThemeContext"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import Styles from "@/components/Styles"
+import Animated, { LinearTransition } from "react-native-reanimated"
+import AntDesign from '@expo/vector-icons/AntDesign'
+import { useRouter, useLocalSearchParams } from "expo-router"
 import { COFFEE_ITEMS, COFFEE_IMAGES } from "@/constants/Coffees"
 import { SANRIO_CHAR_ITEMS, SANRIO_CHAR_IMAGES } from "@/constants/SanrioDates"
+import { LinearGradient } from "expo-linear-gradient"
+import * as Haptics from "expo-haptics"
 
 const initialDays = [
   { name: "S", id: 0, set: true },
@@ -39,8 +42,8 @@ export default function Setting() {
     existingCoffee || {
       id: parseInt(dateId),
       day: null,
-      hour: 2, // to change to null once feature done
-      minute: 3, // to change to null once feature done
+      hour: 0, // to change to null once feature done
+      minute: 0, // to change to null once feature done
       ampm: "pm", // to change to null once feature done
       coffee: null, // to change to null once feature done
       sanrioChar: null, // to change to null once feature done
@@ -52,6 +55,7 @@ export default function Setting() {
       AsyncStorage.setItem("coffeeDates", JSON.stringify(coffeeDates)).catch(e => console.error("Error saving coffee dates:", e));
     }
   }, [coffeeDates]);
+
   const addCoffeeDate = () => {
     // check if all parameters in date are set
     if (!Object.values(coffeeDate).some(value => value === null || value === undefined)) {
@@ -91,7 +95,7 @@ export default function Setting() {
     // update coffee date and highlight to user which day they chose
     const handleDayPress = (selectedItem) => {
       setDay(prevDays => prevDays.map(day => ({...day,set: day.id === selectedItem.id ? !day.set : false})));
-      setCoffeeDate({...coffeeDate, day:selectedItem.id})
+      setCoffeeDate(prev => ({ ...prev, day: selectedItem.id }))
     }
 
     try {
@@ -132,13 +136,27 @@ export default function Setting() {
   const renderDayItem = useCallback(({ item }) => dayRenderer({ item }), []);
   const renderCoffeeItem = useCallback(({ item }) => coffeeDateRenderer({ item, isSanrioChar: false }), []);
   const renderSanrioItem = useCallback(({ item }) => coffeeDateRenderer({ item, isSanrioChar: true }), []);
-
+  
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.text}>
-          is existing:{coffeeDate.hour}:{coffeeDate.minute} {coffeeDate.ampm}
-        </Text>
+      <View style={styles.UpperSettingContainer}>
+        <TimerPicker
+            onDurationChange={(duration) => setCoffeeDate(prev => ({
+              ...prev, 
+              hour: duration.hours, 
+              minute: duration.minutes
+          }))}
+            padWithNItems={1}
+            use12HourPicker
+            hideSeconds
+            minuteLabel={"Min"}
+            amLabel="AM"
+            pmLabel="PM"
+            hourLimit={12}
+            LinearGradient={LinearGradient}
+            Haptics={Haptics}
+            styles={styles.timePicker}
+        />
         <View style={styles.daysContainer}>
           <Animated.FlatList
             data={days}
@@ -150,21 +168,7 @@ export default function Setting() {
             contentContainerStyle={styles.dayContainer}
           />
         </View>
-      </View>
-      <View style={styles.seperator}/>
-      <View>
-        <Pressable onPress={addCoffeeDate}>
-          <AntDesign 
-          name='pluscircle'
-          size={30} 
-          style={styles.alarmIcons}/>
-        </Pressable>
-        <Pressable onPress={removeCoffeeDate}>
-          <AntDesign 
-          name='minuscircle'
-          size={30} 
-          style={styles.alarmIcons}/>
-        </Pressable>
+        <View style={styles.seperator}/>
       </View>
       <View style={styles.middleSettingContainer}>
         <View style={styles.coffeeDateContainer}>
@@ -191,6 +195,20 @@ export default function Setting() {
             contentContainerStyle={styles.coffeeDateContainer}
           />
         </View>
+      </View>
+      <View style={styles.BottomSettingContainer}>
+        <Pressable onPress={addCoffeeDate}>
+          <AntDesign 
+          name='pluscircle'
+          size={30} 
+          style={styles.alarmIcons}/>
+        </Pressable>
+        <Pressable onPress={removeCoffeeDate}>
+          <AntDesign 
+          name='minuscircle'
+          size={30} 
+          style={styles.alarmIcons}/>
+        </Pressable>
       </View>
     </SafeAreaView>
   );

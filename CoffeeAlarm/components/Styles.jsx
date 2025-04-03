@@ -55,6 +55,18 @@ export default function Styles() {
 
         // dateId page components
         middleSettingContainer:{
+            height: "60%",
+            flexDirection:'row',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+        },
+        UpperSettingContainer:{
+            height: "20%",
+            zIndex: 10,
+            alignItems: 'center',
+        },
+        BottomSettingContainer:{
+            height: "10%",
             flexDirection:'row',
             justifyContent: 'space-evenly',
             alignItems: 'center',
@@ -96,8 +108,27 @@ export default function Styles() {
             color:theme.text,
             fontSize: 15,
         },
-        coffeeDateRo: {
+        coffeeDateRow: {
             alignItems: 'center',
+        },
+
+        // time scheduling components
+        timePicker: {
+            alignItems: 'center',
+            backgroundColor:theme.background,
+            pickerItem: {
+                fontSize: 20,
+            },
+            pickerLabel: {
+                fontSize: 14,
+                right: -20,
+            },
+            pickerLabelContainer: {
+                width: "50%",
+            },
+            pickerItemContainer: {
+                width: "15%",
+            },
         },
     })
 }
