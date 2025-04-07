@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient"
 import * as Haptics from "expo-haptics"
 import { COFFEE_IMAGES } from "@/constants/Coffees"
 import { SANRIO_CHAR_IMAGES } from "@/constants/SanrioDates"
+import TimeScheduler from "@/components/timeScheduler"
 
 export default function Setting() {
   const styles = Styles()
@@ -22,25 +23,32 @@ export default function Setting() {
     highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates  } = useContext(DateContext)
 
   const addCoffeeDate = () => {
-    // if they are adding, add the coffeeDate and update the highestCoffeeId, else jsut modify
+    // if they are adding, add the coffeeDate and update the highestCoffeeId, else just update the modified date
     if (isAdding) {
-      router.push("/schedule");
-      setCoffeeId(highestCoffeeId+1)
+      // alert the user if there are any unfilled value
+      if (!Object.values(coffeeDate).some(value => value === null || value === undefined)) {
+        router.push("/schedule");
+        setCoffeeId(highestCoffeeId+1)
+        //TODO: ADD LOGIC FOR ADDING NEW COFFEE DATE
+      } else {
+        Vibration.vibrate();
+      }
     } else {
-
       router.push("/schedule");
+      //TODO: ADD LOGIC FOR MODIFYING COFFEE DATE
     }
   };
 
+  // TODO: change this to cancel later
   const removeCoffeeDate = () => {
     setCoffeeId(0)
     router.push("/schedule");
   };
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.UpperSettingContainer}>
-
+        <TimeScheduler/>
       </View>
       <View style={styles.middleSettingContainer}>
         <Text>

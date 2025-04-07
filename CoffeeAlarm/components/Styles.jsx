@@ -17,6 +17,7 @@ export default function Styles() {
           backgroundColor:theme.background
         },
         UpperSettingContainer:{
+            paddingTop: "2%",
             flex: 2.5,
             alignItems: 'center',
         },
@@ -120,18 +121,22 @@ export default function Styles() {
         timePicker: {
             alignItems: 'center',
             backgroundColor:theme.background,
+            pickerContainer:{
+                left: 15,
+            },
             pickerItem: {
-                fontSize: 20,
+                fontSize: 68,
             },
             pickerLabel: {
-                fontSize: 14,
-                right: -20,
+                fontSize: 30,
+                right: -30,
             },
             pickerLabelContainer: {
-                width: "50%",
+                width: 60,
             },
             pickerItemContainer: {
-                width: "15%",
+                width: 150,
+                height: 75,
             },
         },
     })

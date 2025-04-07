@@ -1,35 +1,36 @@
 import { TimerPicker } from "react-native-timer-picker"
-import { LinearGradient } from "expo-linear-gradient";
 import Styles from "@/components/Styles";
-import { View } from "react-native";
-import * as Haptics from "expo-haptics";
-import { useState } from "react";
+import { DateContext } from "@/context/DateContext"
+import { useContext } from "react";
 
 /**
- * Function that returns a control panel containing:
- * - toggle for dark and light mode
- * - button that links to another stack (scheduling an alarm)
+ * Function that returns a timepicker module:
+ * - updates the coffeeDate parameters
+ * - allows user to choose the time of the alarm
  * @param {*} None
- * @returns a control panel for the theme and alarms
+ * @returns a timepicker module
  */
 export default function TimeScheduler() {
-    const [currentAlarm, setCurrentAlarm] = useState({duration: { hours: number, minutes: number, seconds: number }})
+    const { setCoffeeDate, isAdding, coffeeDate } = useContext(DateContext)
     const styles = Styles()
-
 
     return (
         <TimerPicker
-            onDurationChange={setCurrentAlarm(duration)}
-            padWithNItems={1}
+            onDurationChange={(duration) => setCoffeeDate(prev => ({
+              ...prev, 
+              hour: duration.hours, 
+              minute: duration.minutes,
+              ampm: duration.hours >= 12 ? "PM" : "AM"
+          }))}
+            padWithNItems={0}
             use12HourPicker
             hideSeconds
             minuteLabel={""}
             amLabel="AM"
             pmLabel="PM"
             hourLimit={12}
-            LinearGradient={LinearGradient}
-            Haptics={Haptics}
             styles={styles.timePicker}
+            initialValue= {isAdding ? { hours: 0, minutes: 0} : { hours: coffeeDate.hour, minutes: coffeeDate.minute }}
         />
     )
 }

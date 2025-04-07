@@ -22,7 +22,7 @@ const days = {
 }
 
 export default function Schedule() {
-  const { highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates } = useContext(DateContext)
+  const { highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates, setIsAdding } = useContext(DateContext)
   const router = useRouter()
   const styles = Styles()
 
@@ -31,6 +31,7 @@ export default function Schedule() {
   }
 
   const handleDates = (dateId) => {
+    setIsAdding(false)
     router.push(`/dates/${dateId}`)
   }
 
