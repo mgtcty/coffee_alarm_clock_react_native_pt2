@@ -76,6 +76,8 @@ export default function Styles() {
         coffeeDateContainer:{
             alignItems: 'center',
         },
+
+        // dayscheduler components
         daysContainer: {
             justifyContent: 'space-evenly',
             alignItems: 'center',
@@ -92,11 +94,14 @@ export default function Styles() {
             width: '80%',
             alignItems: 'center',
             justifyContent: 'space-evenly',
+            right:-15
         },
         dayButton: {
             padding: '5%',
             paddingBottom: '10%',
         },
+
+        // coffeedatescheduler components
         coffeeDateImages: {
             width: 100,
             height: 100

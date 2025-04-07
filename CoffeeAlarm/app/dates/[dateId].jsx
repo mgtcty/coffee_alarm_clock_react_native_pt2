@@ -13,6 +13,7 @@ import * as Haptics from "expo-haptics"
 import { COFFEE_IMAGES } from "@/constants/Coffees"
 import { SANRIO_CHAR_IMAGES } from "@/constants/SanrioDates"
 import TimeScheduler from "@/components/timeScheduler"
+import DayScheduler from "@/components/dayScheduler"
 
 export default function Setting() {
   const styles = Styles()
@@ -49,6 +50,7 @@ export default function Setting() {
     <SafeAreaView style={styles.container}>
       <View style={styles.UpperSettingContainer}>
         <TimeScheduler/>
+        <DayScheduler/>
       </View>
       <View style={styles.middleSettingContainer}>
         <Text>
