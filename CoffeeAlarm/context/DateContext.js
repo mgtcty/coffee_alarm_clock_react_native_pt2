@@ -1,11 +1,28 @@
 import { Children, createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { COFFEE_ITEMS, COFFEE_IMAGES } from "@/constants/Coffees"
+import { SANRIO_CHAR_ITEMS, SANRIO_CHAR_IMAGES } from "@/constants/SanrioDates"
 
 export const DateContext = createContext({})
+
+const initialDays = [
+    { name: "S", id: 0, set: true },
+    { name: "M", id: 1, set: false },
+    { name: "T", id: 2, set: false },
+    { name: "W", id: 3, set: false },
+    { name: "T", id: 4, set: false },
+    { name: "F", id: 5, set: false },
+    { name: "S", id: 6, set: false }
+  ];
 
 export const DateProvider = ({ children }) => {
     const [ highestCoffeeId, setCoffeeId ] = useState(null)
     const [ coffeeDates, setCoffeeDates ] = useState([])
+    const [ coffeeDate, setCoffeeDate ] = useState(null);
+    const [ sanrioChar, setSanrioChar ] = useState(SANRIO_CHAR_ITEMS)
+    const [ coffeeDrink, setCoffeeDrink ] = useState(COFFEE_ITEMS)
+    const [ isAdding, setIsAdding ] = useState(false)
+    const [days, setDay ] = useState(initialDays)
     const sortDates = (cDates) => cDates.sort((a, b) => b.id - a.id)
 
     // retrieve all coffee dates from local device
@@ -18,10 +35,13 @@ export const DateProvider = ({ children }) => {
                 // parse if not null
                 const coffeeDs = jsonCoffeeDates ? sortDates(JSON.parse(jsonCoffeeDates)) : []
                 
-                // check if there is a list of coffee dates
+                // check if there is a list of coffee dates else default to zero
                 if (coffeeDs && coffeeDs.length) {
                     setCoffeeId(coffeeDs[0].id) // get the highest id
                     setCoffeeDates(coffeeDs)    // store all coffee date
+                } else {
+                    setCoffeeId(0)
+                    setCoffeeDates([])
                 }
             } catch (e) {
                 console.error("Error fetching coffee dates:", e);
@@ -30,8 +50,34 @@ export const DateProvider = ({ children }) => {
         fetchCoffeeDates()
     },[])
 
+    // Set coffee date according to the found id, else default to null all values
+    useEffect(() => {
+        if (highestCoffeeId !== null) {
+            // find the coffee date of the highest id and store it in "coffeeDate"
+            const found = coffeeDates.find(date => date.id.toString() === highestCoffeeId.toString());
+            setCoffeeDate(
+                found || {
+                id: parseInt(highestCoffeeId),
+                day: null,
+                hour: null,
+                minute: null,
+                ampm: null,
+                coffee: null,
+                sanrioChar: null,
+                }
+            );
+        }
+    }, [highestCoffeeId, coffeeDates]);
+
+    const hasDates = coffeeDates && coffeeDates.length;
+    const existingCoffee = hasDates ? coffeeDates.find(date => date.id.toString() === highestCoffeeId?.toString()) : null;
+
     return(
-        <DateContext.Provider value={{ highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates }}>
+        <DateContext.Provider value={{ days, setDay, 
+            isAdding, setIsAdding,
+            sanrioChar, setSanrioChar, coffeeDrink, setCoffeeDrink,
+            coffeeDate, setCoffeeDate, existingCoffee,
+            highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates }}>
             {children}
         </DateContext.Provider>
     )

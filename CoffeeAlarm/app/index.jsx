@@ -1,4 +1,4 @@
-import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet } from "react-native";
+import { Text, View, Appearance, SafeAreaView, Image, Pressable, StyleSheet } from "react-native";
 import { useContext } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
 import Footer from "@/components/footer";
@@ -10,13 +10,13 @@ export default function Index() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      <View style={styles.UpperSettingContainer}>
         <Text style={styles.text}>
           Dwink!
         </Text>
       </View>
       <ThemeAndAlarmScheduling/>
-      <View>
+      <View style={styles.middleSettingContainer}>
         <Text style={styles.text}>
           button clicking area
         </Text>

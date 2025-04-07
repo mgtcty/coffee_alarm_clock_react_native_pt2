@@ -16,7 +16,7 @@ import Styles from "@/components/Styles";
  */
 export default function ThemeAndAlarmScheduling() {
     const { colorScheme, setColorScheme, theme, toggleTheme } = useContext(ThemeContext)
-    const { highestCoffeeId } = useContext(DateContext) // coffeeId is the highest id in the list
+    const { highestCoffeeId, setIsAdding } = useContext(DateContext) // coffeeId is the highest id in the list
     const styles = Styles()
 
 
@@ -30,7 +30,7 @@ export default function ThemeAndAlarmScheduling() {
                     size={30}/>
                 </Pressable>
                 <Link href={`/dates/${highestCoffeeId != null ? highestCoffeeId + 1 : 1}`} asChild>
-                    <Pressable>
+                    <Pressable onPress={setIsAdding(true)}>
                         <MaterialCommunityIcons 
                         name='clock-plus-outline'
                         size={30} 

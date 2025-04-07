@@ -1,4 +1,4 @@
-import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet } from "react-native";
+import { Text, View, Appearance, SafeAreaView, Pressable, Image, StyleSheet } from "react-native";
 import Footer from "@/components/footer";
 import Styles from "@/components/Styles";
 import ThemeAndAlarmScheduling from "@/components/themeAndAlarmControls";
@@ -7,6 +7,19 @@ import Animated, { LinearTransition } from "react-native-reanimated";
 import { useEffect, useState, useContext } from "react";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { DateContext } from "@/context/DateContext"
+import { COFFEE_ITEMS, COFFEE_IMAGES } from "@/constants/Coffees"
+import { SANRIO_CHAR_ITEMS, SANRIO_CHAR_IMAGES } from "@/constants/SanrioDates"
+
+
+const days = {
+  0:"S",
+  1:"M",
+  2:"T",
+  3:"W",
+  4:"T",
+  5:"F",
+  6:"S",
+}
 
 export default function Schedule() {
   const { highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates } = useContext(DateContext)
@@ -26,8 +39,10 @@ export default function Schedule() {
       return (
         <View>
           <Pressable onPress={() => handleDates(item.id)}>
-            <Text style={styles.text}>{item.id} has time of: {item.hour}:{item.minute} {item.ampm} and at day {item.day} 
+            <Text style={styles.text}>{item.id} has time of: {item.hour <= 12? item.hour: item.hour-12}:{item.minute} {item.ampm} and at day {item.day} 
                with coffee of {item.coffee} and character of {item.sanrioChar}</Text>
+            <Image source={SANRIO_CHAR_IMAGES[item.sanrioChar]} style={styles.coffeeDateImages}/>
+            <Image source={COFFEE_IMAGES[item.coffee]} style={styles.coffeeDateImages}/>
           </Pressable>
         </View>
       );
@@ -39,13 +54,13 @@ export default function Schedule() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      <View style={styles.UpperSettingContainer}>
         <Text style={styles.text}>
           No Coffee Date
         </Text>
       </View>
       <ThemeAndAlarmScheduling/>
-      <View>
+      <View style={styles.middleSettingContainer}>
         <Animated.FlatList
           data={coffeeDates}
           renderItem={coffeeDateRenderer}

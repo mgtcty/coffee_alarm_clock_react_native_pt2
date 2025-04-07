@@ -10,9 +10,27 @@ export default function Styles() {
         //container components
         container:{
           flex:1,
+          flexDirection: 'column',
           justifyContent:'flex-end',
           width: '100%',
+          alignItems: 'stretch',
           backgroundColor:theme.background
+        },
+        UpperSettingContainer:{
+            flex: 2.5,
+            alignItems: 'center',
+        },
+        middleSettingContainer:{
+            flex: 5.5,
+            flexDirection:'row',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+        },
+        BottomSettingContainer:{
+            flex: 2,
+            flexDirection:'row',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
         },
 
         // text components
@@ -54,23 +72,6 @@ export default function Styles() {
         },
 
         // dateId page components
-        middleSettingContainer:{
-            height: "60%",
-            flexDirection:'row',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-        },
-        UpperSettingContainer:{
-            height: "20%",
-            zIndex: 10,
-            alignItems: 'center',
-        },
-        BottomSettingContainer:{
-            height: "10%",
-            flexDirection:'row',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-        },
         coffeeDateContainer:{
             alignItems: 'center',
         },
@@ -98,6 +99,9 @@ export default function Styles() {
         coffeeDateImages: {
             width: 100,
             height: 100
+        },
+        selectedCoffeeDateImages:{
+            background: theme.highlightedImage
         },
         coffeeDateContainer:{
             flexDirection: 'column',
