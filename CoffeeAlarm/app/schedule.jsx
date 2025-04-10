@@ -2,7 +2,6 @@ import { Text, View, Appearance, SafeAreaView, Pressable, Image, StyleSheet } fr
 import Footer from "@/components/footer";
 import Styles from "@/components/Styles";
 import ThemeAndAlarmScheduling from "@/components/themeAndAlarmControls";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import { useEffect, useState, useContext } from "react";
 import { useRouter, useLocalSearchParams } from "expo-router";
@@ -42,8 +41,8 @@ export default function Schedule() {
           <Pressable onPress={() => handleDates(item.id)}>
             <Text style={styles.text}>{item.id} has time of: {item.hour <= 12? item.hour: item.hour-12}:{item.minute} {item.ampm} and at day {item.day} 
                with coffee of {item.coffee} and character of {item.sanrioChar}</Text>
-            <Image source={SANRIO_CHAR_IMAGES[item.sanrioChar]} style={styles.coffeeDateImages}/>
-            <Image source={COFFEE_IMAGES[item.coffee]} style={styles.coffeeDateImages}/>
+            <Image source={SANRIO_CHAR_IMAGES[item.sanrioChar-1]} style={styles.coffeeDateImages}/>
+            <Image source={COFFEE_IMAGES[item.coffee-1]} style={styles.coffeeDateImages}/>
           </Pressable>
         </View>
       );

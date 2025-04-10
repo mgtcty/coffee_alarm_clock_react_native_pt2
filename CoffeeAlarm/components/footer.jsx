@@ -14,7 +14,7 @@ export default function Footer({ pageName }) {
     const styles = Styles()
 
     // creates a button with a link if not on that page
-    const createButton = (href, IconComponent, iconName, iconColor) => {
+    const createButton = (href, IconComponent, iconName) => {
         const iconButton = (
             <Pressable>
                 <IconComponent name={iconName} size={36} style={styles.footerIcons}/>

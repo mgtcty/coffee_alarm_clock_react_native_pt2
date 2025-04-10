@@ -16,8 +16,16 @@ import Styles from "@/components/Styles";
  */
 export default function ThemeAndAlarmScheduling() {
     const { colorScheme, toggleTheme } = useContext(ThemeContext)
-    const { highestCoffeeId, setIsAdding } = useContext(DateContext) // coffeeId is the highest id in the list
+    const { highestCoffeeId, setIsAdding, setSanrioChar, setCoffeeDrink, setDay } = useContext(DateContext) // coffeeId is the highest id in the list
     const styles = Styles()
+
+    // reset values everytime the user wants to add another coffeeDate
+    const dateResetter = () => {
+        setIsAdding(true)
+        setSanrioChar(prevSanrioChars => prevSanrioChars.map(prevSanrioChar => ({...prevSanrioChar,selected:false})))
+        setCoffeeDrink(prevCoffeeDrinks => prevCoffeeDrinks.map(prevCoffeeDrink => ({...prevCoffeeDrink, selected:false})))
+        setDay(prevDays => prevDays.map(prevDay => ({...prevDay, set:false})))
+    }
 
 
     return (
@@ -30,7 +38,7 @@ export default function ThemeAndAlarmScheduling() {
                     size={30}/>
                 </Pressable>
                 <Link href={`/dates/${highestCoffeeId != null ? highestCoffeeId + 1 : 1}`} asChild>
-                    <Pressable onPress={() => setIsAdding(true)}>
+                    <Pressable onPress={dateResetter}>
                         <MaterialCommunityIcons 
                         name='clock-plus-outline'
                         size={30} 

@@ -5,7 +5,7 @@ export const Colors = {
       icon: '#687076',
       footer: 'black',
       seperator: '#373217',
-      highlightedImage: '#e5c409',
+      highlightedImage: '#eac784',
     },
     dark: {
       text: '#ECEDEE',
@@ -13,7 +13,7 @@ export const Colors = {
       icon: '#eac784',
       footer: 'white',
       seperator: '#dcad39',
-      highlightedImage: '#e5c409',
+      highlightedImage: '#eac784',
     },
   };
   

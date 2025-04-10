@@ -1,11 +1,11 @@
 import { Children, createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { COFFEE_ITEMS, COFFEE_IMAGES } from "@/constants/Coffees"
-import { SANRIO_CHAR_ITEMS, SANRIO_CHAR_IMAGES } from "@/constants/SanrioDates"
+import { COFFEE_ITEMS } from "@/constants/Coffees"
+import { SANRIO_CHAR_ITEMS } from "@/constants/SanrioDates"
 
 export const DateContext = createContext({})
 
-const initialDays = [
+const defaultDays = [
     { name: "S", id: 0, set: true },
     { name: "M", id: 1, set: false },
     { name: "T", id: 2, set: false },
@@ -22,7 +22,7 @@ export const DateProvider = ({ children }) => {
     const [ sanrioChar, setSanrioChar ] = useState(SANRIO_CHAR_ITEMS)
     const [ coffeeDrink, setCoffeeDrink ] = useState(COFFEE_ITEMS)
     const [ isAdding, setIsAdding ] = useState(false)
-    const [days, setDay ] = useState(initialDays)
+    const [days, setDay ] = useState(defaultDays)
     const sortDates = (cDates) => cDates.sort((a, b) => b.id - a.id)
 
     // retrieve all coffee dates from local device

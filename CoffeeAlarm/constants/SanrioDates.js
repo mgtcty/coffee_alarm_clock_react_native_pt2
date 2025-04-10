@@ -24,6 +24,6 @@ export const SANRIO_CHAR_ITEMS = [
 ]
 
 export const SANRIO_CHAR_IMAGES = [
-    kuromi, cinnamoroll, myMelody
+    myMelody, cinnamoroll, kuromi
 ]
 

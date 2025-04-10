@@ -18,17 +18,15 @@ export default function Styles() {
         },
         UpperSettingContainer:{
             paddingTop: "2%",
-            flex: 2.5,
+            flex: 3.5,
             alignItems: 'center',
         },
         middleSettingContainer:{
             flex: 5.5,
-            flexDirection:'row',
-            justifyContent: 'space-evenly',
             alignItems: 'center',
         },
         BottomSettingContainer:{
-            flex: 2,
+            flex: 1,
             flexDirection:'row',
             justifyContent: 'space-evenly',
             alignItems: 'center',
@@ -61,7 +59,8 @@ export default function Styles() {
             backgroundColor:theme.seperator,
             width: '85%',
             maxWidth: 375,
-            marginHorizontal: 'auto',
+            alignSelf: 'center',
+            marginVertical: 10,
         },
         controlPanel:{
             flexDirection:'row',
@@ -104,12 +103,18 @@ export default function Styles() {
         // coffeedatescheduler components
         coffeeDateImages: {
             width: 100,
-            height: 100
+            height: 100,
+            borderRadius: 10,
         },
-        selectedCoffeeDateImages:{
-            background: theme.highlightedImage
+        imageWrapper:{
+            padding: 5,
+            borderRadius: 15,
+        },
+        selectedImageWrapper: {
+            backgroundColor: theme.highlightedImage,
         },
         coffeeDateContainer:{
+            alignItems:'center',
             flexDirection: 'column',
             paddingVertical:10,
             paddingHorizontal:12,
@@ -120,6 +125,11 @@ export default function Styles() {
         },
         coffeeDateRow: {
             alignItems: 'center',
+        },
+        listCoffeeAndCharContainer:{
+            alignContent:'center',
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
         },
 
         // time scheduling components
