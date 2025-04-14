@@ -51,14 +51,13 @@ export default function Setting() {
     }
   };
 
-  let x= 12
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.UpperSettingContainer}>
         <TimeScheduler/>
-        <DayScheduler/>
       </View>
       <View style={styles.seperator}/>
+      <DayScheduler/>
       <View style={styles.middleSettingContainer}>
         <CoffeeAndCharScheduler/>
       </View>

@@ -35,6 +35,7 @@ export default function DayScheduler() {
         }
     }
     const renderDayItem = useCallback(({ item }) => dayRenderer({ item }), []);
+
     
     return (
         <View style={styles.daysContainer}>
@@ -45,6 +46,7 @@ export default function DayScheduler() {
             itemLayoutAnimation={LinearTransition}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
+            scrollEnabled={false}
             contentContainerStyle={styles.dayContainer}
           />
         </View>

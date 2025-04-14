@@ -78,9 +78,7 @@ export default function Styles() {
 
         // dayscheduler components
         daysContainer: {
-            justifyContent: 'space-evenly',
             alignItems: 'center',
-            gap: '1%',
         },
         dayText:{
             fontSize: 24,
@@ -90,14 +88,13 @@ export default function Styles() {
             color:theme.seperator,
         },
         dayContainer: {
-            width: '80%',
+            width: '100%',
             alignItems: 'center',
             justifyContent: 'space-evenly',
-            right:-15
+            paddingHorizontal: 10,
         },
         dayButton: {
-            padding: '5%',
-            paddingBottom: '10%',
+            paddingHorizontal: 8,
         },
 
         // coffeedatescheduler components
@@ -127,17 +124,22 @@ export default function Styles() {
             alignItems: 'center',
         },
         listCoffeeAndCharContainer:{
+            height: '100%',
             alignContent:'center',
             flexDirection: 'row',
             justifyContent: 'space-evenly',
         },
 
         // time scheduling components
+        timepickerContainer:{
+            padding: 10,
+        },
         timePicker: {
             alignItems: 'center',
             backgroundColor:theme.background,
             pickerContainer:{
                 left: 15,
+                height: 150,
             },
             pickerItem: {
                 fontSize: 68,

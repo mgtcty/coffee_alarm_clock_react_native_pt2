@@ -52,7 +52,6 @@ export default function CoffeeAndCharScheduler() {
     const renderCoffeeItem = useCallback(({ item }) => coffeeDateRenderer({ item, isSanrioChar: false }), []);
     const renderSanrioItem = useCallback(({ item }) => coffeeDateRenderer({ item, isSanrioChar: true }), []);
 
-    let x = 1
     return (
         <View style={styles.listCoffeeAndCharContainer}>
             <View style={styles.coffeeDateContainer}>
