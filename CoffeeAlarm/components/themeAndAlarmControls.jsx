@@ -16,7 +16,7 @@ import useStyles from "@/hooks/useStyles";
  */
 export default function ThemeAndAlarmScheduling() {
     const { colorScheme, toggleTheme } = useContext(ThemeContext)
-    const { highestCoffeeId, setIsAdding, setSanrioChar, setCoffeeDrink, setDay } = useContext(DateContext) // coffeeId is the highest id in the list
+    const { highestCoffeeId, setIsAdding, setSanrioChar, setCoffeeDrink, dispatch } = useContext(DateContext) // coffeeId is the highest id in the list
     const styles = useStyles()
 
     // reset values everytime the user wants to add another coffeeDate
@@ -24,7 +24,7 @@ export default function ThemeAndAlarmScheduling() {
         setIsAdding(true)
         setSanrioChar(prevSanrioChars => prevSanrioChars.map(prevSanrioChar => ({...prevSanrioChar,selected:false})))
         setCoffeeDrink(prevCoffeeDrinks => prevCoffeeDrinks.map(prevCoffeeDrink => ({...prevCoffeeDrink, selected:false})))
-        setDay(prevDays => prevDays.map(prevDay => ({...prevDay, set:false})))
+        dispatch(prevDays => prevDays.map(prevDay => ({...prevDay, set:false})))
     }
 
 

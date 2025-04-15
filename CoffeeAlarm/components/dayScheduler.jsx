@@ -1,7 +1,7 @@
 import { View, Pressable, Text, FlatList } from "react-native";
 import useStyles from "@/hooks/useStyles";
 import { DateContext } from "@/context/DateContext"
-import { useContext, useCallback, useEffect, memo } from "react";
+import { useContext, useCallback, memo } from "react";
 
 /**
  * Function that returns a day picker module:
@@ -11,55 +11,37 @@ import { useContext, useCallback, useEffect, memo } from "react";
  * @returns a day picker module
  */
 function DayScheduler() {
-    const { days, setDay, setCoffeeDate, coffeeDate, isAdding } = useContext(DateContext)
+    const { days, dispatch, setCoffeeDate, coffeeDate, isAdding } = useContext(DateContext)
     const styles = useStyles()
 
-    // if the user will modify a date instead of adding one
-    useEffect(() => {
-      if (!isAdding && coffeeDate?.id) {
-        setDay(prevDays =>
-          prevDays.map(day => ({
-            ...day,
-            set: day.id === coffeeDate.id,
-          }))
-        );
-      }
-    }, [isAdding, coffeeDate?.id]);
+    // used a usereducer to update the state of the days clicked
+    const handleDayPress = useCallback((selectedItem) => {
+      dispatch({ type: "TOGGLE_DAY", payload: selectedItem.id });
+      setCoffeeDate(prev => ({ ...prev, day: selectedItem.id }));
+    }, [dispatch, setCoffeeDate]);
 
-    const dayRenderer = ({ item }) => {
-        // update coffee date and highlight to user which day they chose
-        const handleDayPress = (selectedItem) => {
-          setDay(prevDays => prevDays.map(day => ({...day,
-            set: day.id === selectedItem.id && selectedItem.set == false ? true : false})));
-          setCoffeeDate(prev => ({ ...prev, day: selectedItem.id }))
-        }
-    
-        try {
-          return (
-            <View>
-              <Pressable onPress={() => handleDayPress(item)} style={styles.dayButton}>
-                <Text style={[styles.dayText, item.set && styles.selectedDayText]}>{ item.name }</Text>
-              </Pressable>
-            </View>
-          )
-        } catch (e) {
-          console.error("Error rendering days:", e)
-        }
-    }
-    const renderDayItem = useCallback(({ item }) => dayRenderer({ item }), []);
+    // renders the day array and its style
+    const renderDayItem = useCallback(({ item }) => (
+      <View>
+        <Pressable onPress={() => handleDayPress(item)} style={styles.dayButton}>
+          <Text style={[styles.dayText, item.set && styles.selectedDayText]}>
+            {item.name}
+          </Text>
+        </Pressable>
+      </View>
+    ), [handleDayPress, styles]);
 
-    
     return (
-        <View style={styles.daysContainer}>
-          <FlatList
-            data={days}
-            renderItem={renderDayItem}
-            keyExtractor={item => item.id}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.dayContainer}
-          />
-        </View>
+      <View style={styles.daysContainer}>
+        <FlatList
+          data={days}
+          renderItem={renderDayItem}
+          keyExtractor={item => item.id.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.dayContainer}
+        />
+      </View>
     )
 }
 

@@ -1,4 +1,4 @@
-import { Children, createContext, useState, useEffect } from "react";
+import { Children, createContext, useState, useEffect, useReducer } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { COFFEE_ITEMS } from "@/constants/Coffees"
 import { SANRIO_CHAR_ITEMS } from "@/constants/SanrioDates"
@@ -16,14 +16,28 @@ const defaultDays = [
   ];
 
 export const DateProvider = ({ children }) => {
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case "TOGGLE_DAY":
+                return state.map(day => day.id === action.payload ? 
+                    { ...day, set: !day.selected } : {...day, set: false})
+            case "RESET":
+                return action.payload
+            default:
+                return state
+        }
+    }
+
     const [ highestCoffeeId, setCoffeeId ] = useState(null)
     const [ coffeeDates, setCoffeeDates ] = useState([])
     const [ coffeeDate, setCoffeeDate ] = useState(null);
     const [ sanrioChar, setSanrioChar ] = useState(SANRIO_CHAR_ITEMS)
     const [ coffeeDrink, setCoffeeDrink ] = useState(COFFEE_ITEMS)
     const [ isAdding, setIsAdding ] = useState(false)
-    const [ days, setDay ] = useState(defaultDays)
+    const [ days, dispatch ] = useReducer(reducer, defaultDays)
     const sortDates = (cDates) => cDates.sort((a, b) => b.id - a.id)
+
+
 
     // retrieve all coffee dates from local device
     useEffect(() => {
@@ -73,7 +87,7 @@ export const DateProvider = ({ children }) => {
     const existingCoffee = hasDates ? coffeeDates.find(date => date.id.toString() === highestCoffeeId?.toString()) : null;
 
     return(
-        <DateContext.Provider value={{ days, setDay, 
+        <DateContext.Provider value={{ days, dispatch, 
             isAdding, setIsAdding,
             sanrioChar, setSanrioChar, coffeeDrink, setCoffeeDrink,
             coffeeDate, setCoffeeDate, existingCoffee,
