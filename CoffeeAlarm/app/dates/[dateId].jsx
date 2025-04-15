@@ -1,7 +1,7 @@
-import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet, Image, Vibration } from "react-native"
+import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet, Vibration } from "react-native"
 import { useContext, useState, useEffect, useCallback } from "react"
 import { DateContext } from "@/context/DateContext"
-import Styles from "@/components/Styles"
+import useStyles from "@/hooks/useStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AntDesign from '@expo/vector-icons/AntDesign'
 import { useRouter } from "expo-router"
@@ -11,12 +11,9 @@ import DayScheduler from "@/components/dayScheduler"
 import CoffeeAndCharScheduler from "@/components/coffeeAndCharScheduler"
 
 export default function Setting() {
-  const styles = Styles()
+  const styles = useStyles()
   const router = useRouter()
-  const { days, setDay, isAdding,
-    sanrioChar, setSanrioChar, coffeeDrink, setCoffeeDrink,
-    coffeeDate, setCoffeeDate, existingCoffee,
-    highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates  } = useContext(DateContext)
+  const { isAdding, coffeeDate, highestCoffeeId, setCoffeeId, setCoffeeDates  } = useContext(DateContext)
 
   const addCoffeeDate = () => {
     // if they are adding, add the coffeeDate and update the highestCoffeeId, else just update the modified date
@@ -51,10 +48,12 @@ export default function Setting() {
     }
   };
 
+  // fix optimization error with: <TimeScheduler/>,
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.UpperSettingContainer}>
         <TimeScheduler/>
+        <Text>{coffeeDate.hour}:{coffeeDate.minute} with coffee of: {coffeeDate.coffee}</Text>
       </View>
       <View style={styles.seperator}/>
       <DayScheduler/>

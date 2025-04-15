@@ -1,6 +1,6 @@
 import { Text, View, Appearance, SafeAreaView, Pressable, Image, StyleSheet } from "react-native";
 import Footer from "@/components/footer";
-import Styles from "@/components/Styles";
+import useStyles from "@/hooks/useStyles";
 import ThemeAndAlarmScheduling from "@/components/themeAndAlarmControls";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import { useEffect, useState, useContext } from "react";
@@ -21,9 +21,9 @@ const days = {
 }
 
 export default function Schedule() {
-  const { highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates, setIsAdding } = useContext(DateContext)
+  const { highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates, setIsAdding, setCoffeeDate } = useContext(DateContext)
   const router = useRouter()
-  const styles = Styles()
+  const styles = useStyles()
 
   const deleteCoffeeDate = () => {
     
@@ -31,6 +31,8 @@ export default function Schedule() {
 
   const handleDates = (dateId) => {
     setIsAdding(false)
+    let selectedCoffeeDate = coffeeDates.find(coffeeDate => coffeeDate.id === dateId);
+    setCoffeeDate(selectedCoffeeDate)
     router.push(`/dates/${dateId}`)
   }
 
@@ -66,6 +68,7 @@ export default function Schedule() {
           renderItem={coffeeDateRenderer}
           keyExtractor={item => item.id}
           itemLayoutAnimation={LinearTransition}
+          showsVerticalScrollIndicator={false}
         />
       </View>
       <Footer pageName="/schedule"/>

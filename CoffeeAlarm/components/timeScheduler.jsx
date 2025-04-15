@@ -1,7 +1,7 @@
 import { TimerPicker } from "react-native-timer-picker"
-import Styles from "@/components/Styles";
+import useStyles from "@/hooks/useStyles";
 import { DateContext } from "@/context/DateContext"
-import { useContext } from "react";
+import { useContext, memo } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { View } from "react-native";
 
@@ -12,10 +12,9 @@ import { View } from "react-native";
  * @param {*} None
  * @returns a timepicker module
  */
-export default function TimeScheduler() {
+function TimeScheduler() {
     const { setCoffeeDate, isAdding, coffeeDate } = useContext(DateContext)
-    const styles = Styles()
-
+    const styles = useStyles()
 
     return (
         <View style={styles.timepickerContainer}>
@@ -41,3 +40,5 @@ export default function TimeScheduler() {
         </View>
     )
 }
+
+export default memo(TimeScheduler);

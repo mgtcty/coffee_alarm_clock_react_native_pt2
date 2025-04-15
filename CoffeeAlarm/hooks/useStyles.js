@@ -1,12 +1,12 @@
-import { useContext } from "react";
+import { useMemo, useContext } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
 import { StyleSheet } from "react-native";
 
 
-export default function Styles() {
-    const {colorScheme, setColorScheme, theme} = useContext(ThemeContext)
+export default function useStyles() {
+    const { theme } = useContext(ThemeContext)
 
-    return StyleSheet.create({
+    return useMemo(() => StyleSheet.create({
         //container components
         container:{
           flex:1,
@@ -156,5 +156,5 @@ export default function Styles() {
                 height: 75,
             },
         },
-    })
+    }), [theme])
 }

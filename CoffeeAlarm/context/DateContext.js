@@ -22,7 +22,7 @@ export const DateProvider = ({ children }) => {
     const [ sanrioChar, setSanrioChar ] = useState(SANRIO_CHAR_ITEMS)
     const [ coffeeDrink, setCoffeeDrink ] = useState(COFFEE_ITEMS)
     const [ isAdding, setIsAdding ] = useState(false)
-    const [days, setDay ] = useState(defaultDays)
+    const [ days, setDay ] = useState(defaultDays)
     const sortDates = (cDates) => cDates.sort((a, b) => b.id - a.id)
 
     // retrieve all coffee dates from local device

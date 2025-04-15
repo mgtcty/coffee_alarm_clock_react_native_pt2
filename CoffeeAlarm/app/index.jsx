@@ -2,11 +2,11 @@ import { Text, View, Appearance, SafeAreaView, Image, Pressable, StyleSheet } fr
 import { useContext } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
 import Footer from "@/components/footer";
-import Styles from "@/components/Styles";
+import useStyles from "@/hooks/useStyles";
 import ThemeAndAlarmScheduling from "@/components/themeAndAlarmControls";
 
 export default function Index() {
-  const styles = Styles();
+  const styles = useStyles();
 
   return (
     <SafeAreaView style={styles.container}>

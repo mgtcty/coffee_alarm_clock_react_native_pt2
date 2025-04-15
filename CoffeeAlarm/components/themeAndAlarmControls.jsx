@@ -5,7 +5,7 @@ import { ThemeContext } from "@/context/ThemeContext";
 import { DateContext } from "@/context/DateContext";
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Styles from "@/components/Styles";
+import useStyles from "@/hooks/useStyles";
 
 /**
  * Function that returns a control panel containing:
@@ -17,7 +17,7 @@ import Styles from "@/components/Styles";
 export default function ThemeAndAlarmScheduling() {
     const { colorScheme, toggleTheme } = useContext(ThemeContext)
     const { highestCoffeeId, setIsAdding, setSanrioChar, setCoffeeDrink, setDay } = useContext(DateContext) // coffeeId is the highest id in the list
-    const styles = Styles()
+    const styles = useStyles()
 
     // reset values everytime the user wants to add another coffeeDate
     const dateResetter = () => {

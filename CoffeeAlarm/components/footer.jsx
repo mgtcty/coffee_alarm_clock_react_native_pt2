@@ -2,7 +2,7 @@ import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet } from "rea
 import { Link } from "expo-router";
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Styles from "@/components/Styles";
+import useStyles from "@/hooks/useStyles";
 
 
 /**
@@ -11,7 +11,7 @@ import Styles from "@/components/Styles";
  * @returns a footer component
  */
 export default function Footer({ pageName }) {
-    const styles = Styles()
+    const styles = useStyles()
 
     // creates a button with a link if not on that page
     const createButton = (href, IconComponent, iconName) => {
