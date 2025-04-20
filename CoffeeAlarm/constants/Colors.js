@@ -14,6 +14,7 @@ export const Colors = {
       footer: 'white',
       seperator: '#dcad39',
       highlightedImage: '#eac784',
+      rippleFooter: '#eeb74e',
     },
   };
   

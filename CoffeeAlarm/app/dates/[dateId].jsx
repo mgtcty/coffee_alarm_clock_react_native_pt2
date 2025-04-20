@@ -94,18 +94,18 @@ export default function Setting() {
         <TimeScheduler/>
       </View>
       <View style={styles.seperator}/>
-      <DayScheduler/>
+        <DayScheduler/>
       <View style={styles.middleSettingContainer}>
         <CoffeeAndCharScheduler/>
       </View>
       <View style={styles.BottomSettingContainer}>
-        <Pressable onPress={addCoffeeDate}>
+        <Pressable onPress={addCoffeeDate} android_ripple={styles.footerRippling}>
           <AntDesign 
           name='pluscircle'
           size={36} 
           style={styles.alarmIcons}/>
         </Pressable>
-        <Pressable onPress={removeCoffeeDate}>
+        <Pressable onPress={removeCoffeeDate} android_ripple={styles.footerRippling}>
           <AntDesign 
           name='minuscircle'
           size={36} 

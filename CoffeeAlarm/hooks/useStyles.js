@@ -49,6 +49,9 @@ export default function useStyles() {
             padding: 10,
             color: theme.icon,
         },
+        footerRippling:{
+            color: theme.footerRippling,
+        },
 
         // theme and alarm scheduling component
         alarmIcons:{
@@ -109,6 +112,7 @@ export default function useStyles() {
         },
         selectedImageWrapper: {
             backgroundColor: theme.highlightedImage,
+            borderRadius: 15
         },
         coffeeDateContainer:{
             alignItems:'center',
@@ -122,12 +126,16 @@ export default function useStyles() {
         },
         coffeeDateRow: {
             alignItems: 'center',
+
         },
         listCoffeeAndCharContainer:{
             height: '100%',
             alignContent:'center',
             flexDirection: 'row',
             justifyContent: 'space-evenly',
+        },
+        coffeeCharRippling:{
+            color: '#eac784',
         },
 
         // time scheduling components
