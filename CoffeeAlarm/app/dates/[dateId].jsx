@@ -1,5 +1,5 @@
 import { Text, View, SafeAreaView, Pressable, StyleSheet, Vibration } from "react-native"
-import { useContext, useCallback } from "react"
+import { useContext, useCallback, useEffect } from "react"
 import { DateContext } from "@/context/DateContext"
 import useStyles from "@/hooks/useStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -12,7 +12,42 @@ import CoffeeAndCharScheduler from "@/components/coffeeAndCharScheduler"
 export default function Setting() {
   const styles = useStyles()
   const router = useRouter()
-  const { isAdding, coffeeDate, highestCoffeeId, setCoffeeId, setCoffeeDates  } = useContext(DateContext)
+  const { isAdding, coffeeDate, highestCoffeeId, setCoffeeId, setCoffeeDates, coffeeDates, setNearestDate, nearestDate } = useContext(DateContext)
+
+  const arrangeCoffeeDates = (dates) => {
+      const now = new Date()
+      const nowTime = now.getTime()
+  
+      const arrangedCoffeeList = dates
+        .map(date => {
+          const target = new Date()
+          const nowDay = now.getDay()
+  
+          // calculate how many days to add
+          let dayDiff = date.day - nowDay;
+          if (dayDiff < 0 || (dayDiff === 0 && (date.hour < now.getHours() || (date.hour === now.getHours() && date.minute <= now.getMinutes())))) {
+            // if day is behind or it's today but earlier, go to next week's same day
+            dayDiff += 7
+          }
+  
+          target.setDate(now.getDate() + dayDiff)
+          target.setHours(date.hour)
+          target.setMinutes(date.minute)
+          target.setSeconds(0)
+          target.setMilliseconds(0)
+  
+          const diff = target.getTime() - nowTime
+  
+          return {
+            ...date,
+            timeUntilAlarm: diff,
+            timestamp: target.getTime(),
+          }
+        })
+        .sort((a, b) => a.timeUntilAlarm - b.timeUntilAlarm) // sort nearest to farthest
+
+      return arrangedCoffeeList
+  };
 
   const addCoffeeDate = useCallback(() => {
     // if they are adding, add the coffeeDate and update the highestCoffeeId, else just update the modified date
@@ -23,16 +58,20 @@ export default function Setting() {
 
       // alert the user if there are any unfilled value
       if (allFieldsFilled) {
-        router.push("/schedule");
+        const updated = [...coffeeDates, {...coffeeDate, id:highestCoffeeId+1}]
+        const sorted = arrangeCoffeeDates(updated)
         setCoffeeId(highestCoffeeId+1)
-        setCoffeeDates(prevDates => [...prevDates, coffeeDate])
+        setCoffeeDates(sorted)
+        setNearestDate(sorted[0])
+        router.push("/schedule");
       } else {
         Vibration.vibrate();
       }
-
     } else {
+      const updated = coffeeDates.map(prevDate => prevDate.id == coffeeDate.id ? coffeeDate : prevDate)
+      const sorted = arrangeCoffeeDates(updated)
+      setCoffeeDates(sorted)
       router.push("/schedule");
-      setCoffeeDates(prevDates => prevDates.map(prevDate => prevDate.id == coffeeDate.id ? coffeeDate : prevDate))
     }
   }, [isAdding, coffeeDate, highestCoffeeId, setCoffeeDates, setCoffeeId, router]);
 
@@ -41,6 +80,7 @@ export default function Setting() {
       const updatedDates = [];
       setCoffeeDates(updatedDates);
       setCoffeeId(0)
+      setNearestDate(null)
     
       // save to AsyncStorage AFTER updating state
       await AsyncStorage.setItem("coffeeDates", JSON.stringify(updatedDates));

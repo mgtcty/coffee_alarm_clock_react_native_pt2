@@ -156,5 +156,12 @@ export default function useStyles() {
                 height: 75,
             },
         },
+
+        // schedule.jsx
+        arrangedImageContainer:{
+            flex: 1,
+            justifyContent: 'center',
+            padding: 10,
+        },
     }), [theme])
 }

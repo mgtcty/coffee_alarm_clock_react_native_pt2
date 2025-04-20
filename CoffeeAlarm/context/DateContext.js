@@ -5,7 +5,7 @@ import { SANRIO_CHAR_ITEMS } from "@/constants/SanrioDates"
 
 export const DateContext = createContext({})
 
-const defaultDays = [
+export const defaultDays = [
     { name: "S", id: 0, set: true },
     { name: "M", id: 1, set: false },
     { name: "T", id: 2, set: false },
@@ -35,6 +35,7 @@ export const DateProvider = ({ children }) => {
     const [ coffeeDrink, setCoffeeDrink ] = useState(COFFEE_ITEMS)
     const [ isAdding, setIsAdding ] = useState(false)
     const [ days, dispatch ] = useReducer(reducer, defaultDays)
+    const [ nearestDate, setNearestDate] = useState(null)
     const sortDates = (cDates) => cDates.sort((a, b) => b.id - a.id)
 
 
@@ -88,6 +89,7 @@ export const DateProvider = ({ children }) => {
 
     return(
         <DateContext.Provider value={{ days, dispatch, 
+            nearestDate, setNearestDate,
             isAdding, setIsAdding,
             sanrioChar, setSanrioChar, coffeeDrink, setCoffeeDrink,
             coffeeDate, setCoffeeDate, existingCoffee,

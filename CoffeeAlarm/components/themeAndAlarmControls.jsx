@@ -2,7 +2,7 @@ import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet } from "rea
 import { Link } from "expo-router";
 import { useContext, useEffect } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
-import { DateContext } from "@/context/DateContext";
+import { DateContext, defaultDays } from "@/context/DateContext";
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useStyles from "@/hooks/useStyles";
@@ -24,7 +24,7 @@ export default function ThemeAndAlarmScheduling() {
         setIsAdding(true)
         setSanrioChar(prevSanrioChars => prevSanrioChars.map(prevSanrioChar => ({...prevSanrioChar,selected:false})))
         setCoffeeDrink(prevCoffeeDrinks => prevCoffeeDrinks.map(prevCoffeeDrink => ({...prevCoffeeDrink, selected:false})))
-        dispatch(prevDays => prevDays.map(prevDay => ({...prevDay, set:false})))
+        dispatch({ type: "RESET", payload: defaultDays })
     }
 
 
