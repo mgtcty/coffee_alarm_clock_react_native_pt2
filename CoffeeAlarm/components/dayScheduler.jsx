@@ -40,6 +40,7 @@ function DayScheduler() {
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.dayContainer}
+          getItemLayout={(data, index) => ({ length: 44, offset: 44 * index, index })}
         />
       </View>
     )

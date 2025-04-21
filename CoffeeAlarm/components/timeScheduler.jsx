@@ -35,7 +35,7 @@ function TimeScheduler() {
                 LinearGradient={LinearGradient}
                 padHoursWithZero
                 styles={styles.timePicker}
-                initialValue= {isAdding ? { hours: 0, minutes: 0} : { hours: coffeeDate.hour, minutes: coffeeDate.minute }}
+                initialValue= {isAdding ? { hours: 0, minutes: 0} : { hours: coffeeDate.hour ? coffeeDate.hour : 0, minutes: coffeeDate.minute }}
             />
         </View>
     )

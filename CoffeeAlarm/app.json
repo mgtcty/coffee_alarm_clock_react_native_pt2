@@ -31,7 +31,7 @@
           "image": "./assets/images/coffee_favicon.jpg",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#eac784"
         }
       ]
     ],
