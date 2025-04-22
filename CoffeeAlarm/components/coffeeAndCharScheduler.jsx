@@ -1,6 +1,7 @@
 import { View, Pressable, Text, FlatList } from "react-native";
 import useStyles from "@/hooks/useStyles";
 import { DateContext } from "@/context/DateContext"
+import { SanrioCoffeeContext } from "@/context/SanrioAndCoffeeContext"
 import { useContext, useCallback, memo } from "react";
 import { COFFEE_IMAGES } from "@/constants/Coffees"
 import { SANRIO_CHAR_IMAGES } from "@/constants/SanrioDates"
@@ -26,7 +27,8 @@ const CoffeeCharItem = memo(function CoffeeCharItem({ item, isSanrioChar, onPres
 
 
 function CoffeeAndCharScheduler() {
-    const { setCoffeeDate, sanrioChar, setSanrioChar, coffeeDrink, setCoffeeDrink  } = useContext(DateContext)
+    const { setCoffeeDate } = useContext(DateContext) // change this context into their individual context
+    const { sanrioChar, setSanrioChar, coffeeDrink, setCoffeeDrink } = useContext(SanrioCoffeeContext)
     const styles = useStyles();
 
 

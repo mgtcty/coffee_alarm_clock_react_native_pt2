@@ -20,7 +20,7 @@ const days = {
 }
 
 export default function Schedule() {
-  const { highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates, setIsAdding, setCoffeeDate, nearestDate, setNearestDate } = useContext(DateContext)
+  const { highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates, setIsAdding, setCoffeeDate, nearestDate, setNearestDate } = useContext(DateContext) // change this context into their individual context
   const router = useRouter()
   const styles = useStyles()
 

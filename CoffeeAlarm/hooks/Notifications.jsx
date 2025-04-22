@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
 import * as Notifications from 'expo-notifications';
 
-export default function useNotificationPermission() {
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
+export function useNotificationPermission() {
   const [notificationPermissionGranted, setNotificationPermissionGranted] = useState(false);
 
   useEffect(() => {
@@ -26,4 +34,18 @@ export default function useNotificationPermission() {
   }, []);
 
   return notificationPermissionGranted;
+}
+
+export function useNotificationObserver() {
+
+}
+
+export async function setNotificationAlarm() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Coffee Date ☕",
+      body: "It's time for your coffee with Kuromi!",
+    },
+    trigger: { seconds: 30 }
+  })
 }

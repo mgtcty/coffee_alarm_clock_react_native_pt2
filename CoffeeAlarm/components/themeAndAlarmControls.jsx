@@ -2,7 +2,9 @@ import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet } from "rea
 import { Link } from "expo-router";
 import { useContext, useEffect } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
-import { DateContext, defaultDays } from "@/context/DateContext";
+import { DateContext } from "@/context/DateContext";
+import { DayContext, defaultDays } from "@/context/DayContext"
+import { SanrioCoffeeContext } from "@/context/SanrioAndCoffeeContext"
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useStyles from "@/hooks/useStyles";
@@ -16,7 +18,9 @@ import useStyles from "@/hooks/useStyles";
  */
 export default function ThemeAndAlarmScheduling() {
     const { colorScheme, toggleTheme } = useContext(ThemeContext)
-    const { highestCoffeeId, setIsAdding, setSanrioChar, setCoffeeDrink, dispatch } = useContext(DateContext) // coffeeId is the highest id in the list
+    const { highestCoffeeId } = useContext(DateContext) // change this context into their individual context // coffeeId is the highest id in the list
+    const { setIsAdding, dispatch } = useContext(DayContext)
+    const { setSanrioChar, setCoffeeDrink } = useContext(SanrioCoffeeContext)
     const styles = useStyles()
 
     // reset values everytime the user wants to add another coffeeDate

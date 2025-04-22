@@ -1,6 +1,7 @@
 import { TimerPicker } from "react-native-timer-picker"
 import useStyles from "@/hooks/useStyles";
 import { DateContext } from "@/context/DateContext"
+import { DayContext } from "@/context/DayContext"
 import { useContext, memo } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { View } from "react-native";
@@ -13,7 +14,8 @@ import { View } from "react-native";
  * @returns a timepicker module
  */
 function TimeScheduler() {
-    const { setCoffeeDate, isAdding, coffeeDate } = useContext(DateContext)
+    const { setCoffeeDate, coffeeDate } = useContext(DateContext) // change this context into their individual context
+    const { isAdding } = useContext(DayContext)
     const styles = useStyles()
 
     return (

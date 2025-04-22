@@ -1,6 +1,7 @@
 import { View, Pressable, Text, FlatList } from "react-native";
 import useStyles from "@/hooks/useStyles";
 import { DateContext } from "@/context/DateContext"
+import { DayContext } from "@/context/DayContext"
 import { useContext, useCallback, memo } from "react";
 
 /**
@@ -11,7 +12,8 @@ import { useContext, useCallback, memo } from "react";
  * @returns a day picker module
  */
 function DayScheduler() {
-    const { days, dispatch, setCoffeeDate, coffeeDate, isAdding } = useContext(DateContext)
+    const { setCoffeeDate } = useContext(DateContext) // change this context into their individual context
+    const { days, dispatch } = useContext(DayContext)
     const styles = useStyles()
 
     // used a usereducer to update the state of the days clicked

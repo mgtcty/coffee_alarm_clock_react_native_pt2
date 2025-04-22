@@ -1,8 +1,9 @@
 import { Text, View, SafeAreaView, Pressable, StyleSheet, Vibration } from "react-native"
 import { useContext, useCallback, useEffect } from "react"
 import { DateContext } from "@/context/DateContext"
-import useStyles from "@/hooks/useStyles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DayContext } from "@/context/DayContext"
+import useStyles from "@/hooks/useStyles"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import AntDesign from '@expo/vector-icons/AntDesign'
 import { useRouter } from "expo-router"
 import TimeScheduler from "@/components/timeScheduler"
@@ -12,7 +13,8 @@ import CoffeeAndCharScheduler from "@/components/coffeeAndCharScheduler"
 export default function Setting() {
   const styles = useStyles()
   const router = useRouter()
-  const { isAdding, coffeeDate, highestCoffeeId, setCoffeeId, setCoffeeDates, coffeeDates, setNearestDate, nearestDate } = useContext(DateContext)
+  const { coffeeDate, highestCoffeeId, setCoffeeId, setCoffeeDates, coffeeDates, setNearestDate } = useContext(DateContext) // change this context into their individual context
+  const { isAdding } = useContext(DayContext)
 
   const arrangeCoffeeDates = (dates) => {
       const now = new Date()
@@ -58,6 +60,7 @@ export default function Setting() {
 
       // alert the user if there are any unfilled value
       if (allFieldsFilled) {
+        // update and arrange the coffee dates from nearest to farthest and update all data
         const updated = [...coffeeDates, {...coffeeDate, id:highestCoffeeId+1}]
         const sorted = arrangeCoffeeDates(updated)
         setCoffeeId(highestCoffeeId+1)
