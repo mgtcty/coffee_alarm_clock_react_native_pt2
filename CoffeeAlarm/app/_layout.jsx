@@ -1,32 +1,23 @@
 import { Stack } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ThemeProvider } from "../context/ThemeContext";
-import { DateProvider, DateContext } from "../context/DateContext";
 import CombinedProviders from "@/context/OverallCoffeeDateContext";
-import { useNotificationPermission, setNotificationAlarm } from "@/hooks/Notifications";
-import { useContext, useEffect } from "react";
+import { NotificationProvider } from "@/context/NotificationContext"
 
 export default function RootLayout() {
-  const permission = useNotificationPermission()
-  const { nearestDate } = useContext(DateContext) // change this context into their individual context
-
-  useEffect(() => {
-    setNotificationAlarm();
-  }, []);
-
   return (
     <ThemeProvider>
-      <DateProvider>
       <SafeAreaProvider>
         <CombinedProviders>
-          <Stack screenOptions={{headerShown: false}}>
-            <Stack.Screen name="index"/>
-            <Stack.Screen name="schedule"/>
-            <Stack.Screen name="dates/[dateId]"/>
-          </Stack>
+          <NotificationProvider>
+            <Stack screenOptions={{headerShown: false}}>
+              <Stack.Screen name="index"/>
+              <Stack.Screen name="schedule"/>
+              <Stack.Screen name="dates/[dateId]"/>
+            </Stack>
+          </NotificationProvider>
         </CombinedProviders>
       </SafeAreaProvider>
-      </DateProvider>
     </ThemeProvider>
   )
 }

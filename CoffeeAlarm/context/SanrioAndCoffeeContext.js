@@ -4,7 +4,7 @@ import { SANRIO_CHAR_ITEMS } from "@/constants/SanrioDates"
 
 export const SanrioCoffeeContext = createContext({})
 
-export const  SanrioCoffeeProvider = ({ children }) => {
+export const SanrioCoffeeProvider = ({ children }) => {
     const [ sanrioChar, setSanrioChar ] = useState(SANRIO_CHAR_ITEMS)
     const [ coffeeDrink, setCoffeeDrink ] = useState(COFFEE_ITEMS)
 

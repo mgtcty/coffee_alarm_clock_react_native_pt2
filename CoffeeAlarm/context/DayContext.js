@@ -12,7 +12,7 @@ export const defaultDays = [
     { name: "S", id: 6, set: false }
   ];
 
-export const  DayProvider = ({ children }) => {
+export const DayProvider = ({ children }) => {
     const reducer = (state, action) => {
         switch (action.type) {
             case "TOGGLE_DAY":
