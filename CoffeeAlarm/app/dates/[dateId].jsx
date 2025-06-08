@@ -1,4 +1,4 @@
-import { Text, View, SafeAreaView, Pressable, StyleSheet, Vibration } from "react-native"
+import { View, SafeAreaView, Pressable, Vibration } from "react-native"
 import { useContext, useCallback, useEffect } from "react"
 import { DateContext } from "@/context/DateContext"
 import { DayContext } from "@/context/DayContext"
@@ -9,6 +9,7 @@ import { useRouter } from "expo-router"
 import TimeScheduler from "@/components/timeScheduler"
 import DayScheduler from "@/components/dayScheduler"
 import CoffeeAndCharScheduler from "@/components/coffeeAndCharScheduler"
+import { scheduleNotificationAlarm } from "@/context/NotificationContext"
 
 export default function Setting() {
   const styles = useStyles()
@@ -57,15 +58,25 @@ export default function Setting() {
       const allFieldsFilled = Object.values(coffeeDate).every(
         value => value !== null && value !== undefined
       )
-
       // alert the user if there are any unfilled value
       if (allFieldsFilled) {
-        // update and arrange the coffee dates from nearest to farthest and update all data
+        // update and arrange the coffee dates from nearest to farthest
         const updated = [...coffeeDates, {...coffeeDate, id:highestCoffeeId+1}]
         const sorted = arrangeCoffeeDates(updated)
+
+        // update all data
         setCoffeeId(highestCoffeeId+1)
         setCoffeeDates(sorted)
         setNearestDate(sorted[0])
+
+        // set the most upcoming alarm schedule
+        scheduleNotificationAlarm(sorted[0])
+
+        const dateNow = Date.now();
+        console.log(sorted[0]);
+        console.log("time until alarm is: ", (sorted[0].timeUntilAlarm/1000), "\nalarm will set off at: ", sorted[0].hour, ":", sorted[0].minute)
+        console.log("Current time:", new Date());
+        console.log("Alarm time:", new Date(sorted[0].timestamp));
         router.push("/schedule");
       } else {
         Vibration.vibrate();

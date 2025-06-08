@@ -1,6 +1,6 @@
-import { useState, createContext } from 'react';
+import { useEffect, useState, createContext } from 'react';
 import * as Notifications from 'expo-notifications';
-import * as Device from 'expo-device';
+import { Platform } from 'react-native';
 
 export const NotificationContext = createContext({})
 
@@ -12,44 +12,48 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export const NotificationProvider = async ({ children }) => {
-    const [permGranted , setPermGranted] = useState(false)
+export function NotificationProvider({ children }) {
+  const [permGranted, setPermGranted] = useState(false);
 
-    useEffect(() => {
-        const initialize = async () => {
-        const granted = await initializePermissionSetting()
-        setPermGranted(granted)
-        };
+  useEffect(() => {
+    const initialize = async () => {
+      const granted = await initializePermissionSetting();
+      setPermGranted(granted);
+    };
+    initialize();
+  }, []);
 
-        initialize();
-    }, []);
-
-    return <NotificationContext.Provider value={{permGranted, setPermGranted}}>
-        {children}
+  return (
+    <NotificationContext.Provider value={{ permGranted, setPermGranted }}>
+      {children}
     </NotificationContext.Provider>
+  );
 }
 
 async function initializePermissionSetting() {
-    // return current perms, if not granted request for perms
-    if (Device.isDevice) {
-        const { status: existingStatus} = await Notifications.getPermissionsAsync()
-        let finalStatus = existingStatus
-        if (existingStatus != 'granted') {
-            const { status } = await Notifications.requestPermissionsAsync()
-            finalStatus = status
-        }
-        return finalStatus == 'granted'
+  if (Platform.OS !== 'web') {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
     }
-    return false
+    return finalStatus === 'granted';
+  }
+  return false;
 }
 
-export async function scheduleNotificationAlarm(alarmTrigger) {
-  const alarmTrigger = alarmTrigger || {seconds: 30}
+export async function scheduleNotificationAlarm(alarmInfo) {
   await Notifications.scheduleNotificationAsync({
     content: {
       title: "Coffee Date ☕",
       body: "It's time for your coffee with Kuromi!",
     },
-    trigger: alarmTrigger,
-  })
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.WEEKLY,
+      hour: alarmInfo.hour,
+      minute: alarmInfo.minute,
+      weekday: alarmInfo.day+1
+    },
+  });
 }

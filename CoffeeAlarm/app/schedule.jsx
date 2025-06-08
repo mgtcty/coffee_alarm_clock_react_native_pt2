@@ -2,12 +2,12 @@ import { Text, View, SafeAreaView, Pressable, Image, FlatList, ImageBackground }
 import Footer from "@/components/footer";
 import useStyles from "@/hooks/useStyles";
 import ThemeAndAlarmScheduling from "@/components/themeAndAlarmControls";
-import { useEffect, useState, useContext, memo } from "react";
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useEffect, useContext } from "react";
+import { useRouter } from "expo-router";
 import { DateContext } from "@/context/DateContext"
+import { DayContext } from "@/context/DayContext";
 import { COFFEE_IMAGES } from "@/constants/Coffees"
 import { SANRIO_CHAR_IMAGES } from "@/constants/SanrioDates"
-import * as Notifications from 'expo-notifications';
 
 const days = {
   0:"Sun",
@@ -20,7 +20,8 @@ const days = {
 }
 
 export default function Schedule() {
-  const { highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates, setIsAdding, setCoffeeDate, nearestDate, setNearestDate } = useContext(DateContext) // change this context into their individual context
+  const { highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates, setCoffeeDate, nearestDate, setNearestDate } = useContext(DateContext) // change this context into their individual context
+  const { setIsAdding } = useContext(DayContext)
   const router = useRouter()
   const styles = useStyles()
 
