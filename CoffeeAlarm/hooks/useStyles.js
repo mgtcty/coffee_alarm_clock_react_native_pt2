@@ -49,9 +49,6 @@ export default function useStyles() {
             padding: 10,
             color: theme.icon,
         },
-        footerRippling:{
-            color: theme.footerRippling,
-        },
 
         // theme and alarm scheduling component
         alarmIcons:{

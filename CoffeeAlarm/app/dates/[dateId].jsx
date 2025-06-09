@@ -53,16 +53,19 @@ export default function Setting() {
   };
 
   const addCoffeeDate = useCallback(() => {
-    // if they are adding, add the coffeeDate and update the highestCoffeeId, else just update the modified date
+    let updated = null
+    let sorted = null
+    // if they are adding, add the coffeeDate and update the highestCoffeeId
     if (isAdding) {
       const allFieldsFilled = Object.values(coffeeDate).every(
         value => value !== null && value !== undefined
       )
       // alert the user if there are any unfilled value
       if (allFieldsFilled) {
+        router.push("/schedule");
         // update and arrange the coffee dates from nearest to farthest
-        const updated = [...coffeeDates, {...coffeeDate, id:highestCoffeeId+1}]
-        const sorted = arrangeCoffeeDates(updated)
+        updated = [...coffeeDates, {...coffeeDate, id:highestCoffeeId+1}]
+        sorted = arrangeCoffeeDates(updated)
 
         // update all data
         setCoffeeId(highestCoffeeId+1)
@@ -71,35 +74,39 @@ export default function Setting() {
 
         // set the most upcoming alarm schedule
         scheduleNotificationAlarm(sorted[0])
-
-        const dateNow = Date.now();
-        console.log(sorted[0]);
-        console.log("time until alarm is: ", (sorted[0].timeUntilAlarm/1000), "\nalarm will set off at: ", sorted[0].hour, ":", sorted[0].minute)
-        console.log("Current time:", new Date());
-        console.log("Alarm time:", new Date(sorted[0].timestamp));
-        router.push("/schedule");
       } else {
         Vibration.vibrate();
       }
+    // else just update the modified date
     } else {
-      const updated = coffeeDates.map(prevDate => prevDate.id == coffeeDate.id ? coffeeDate : prevDate)
-      const sorted = arrangeCoffeeDates(updated)
+      router.push("/schedule")
+      updated = coffeeDates.map(prevDate => prevDate.id == coffeeDate.id ? coffeeDate : prevDate)
+      sorted = arrangeCoffeeDates(updated)
       setCoffeeDates(sorted)
-      router.push("/schedule");
     }
   }, [isAdding, coffeeDate, highestCoffeeId, setCoffeeDates, setCoffeeId, router]);
 
+  // Update and store coffeeDates when updated
+  useEffect(() => {
+    const storeCoffeeDates = async () => {
+      try {
+        await AsyncStorage.setItem("coffeeDates", JSON.stringify(coffeeDates))
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    storeCoffeeDates()
+  }, [coffeeDates])
+
   // TODO: change this to cancel later, features must include minusing the highest ID since they didnt add a new one
   const removeCoffeeDate = async () => {
-      const updatedDates = [];
-      setCoffeeDates(updatedDates);
-      setCoffeeId(0)
-      setNearestDate(null)
-    
-      // save to AsyncStorage AFTER updating state
-      await AsyncStorage.setItem("coffeeDates", JSON.stringify(updatedDates));
-
-      router.push("/schedule");
+    router.push("/schedule")
+    setCoffeeDates([])
+    setCoffeeId(0)
+    setNearestDate(null)
+  
+    // save to AsyncStorage AFTER updating state
+    await AsyncStorage.setItem("coffeeDates", JSON.stringify([]))
   }
 
   return (
@@ -113,13 +120,13 @@ export default function Setting() {
         <CoffeeAndCharScheduler/>
       </View>
       <View style={styles.BottomSettingContainer}>
-        <Pressable onPress={addCoffeeDate} android_ripple={styles.footerRippling}>
+        <Pressable onPress={addCoffeeDate} android_ripple={styles.coffeeCharRippling}>
           <AntDesign 
           name='pluscircle'
           size={36} 
           style={styles.alarmIcons}/>
         </Pressable>
-        <Pressable onPress={removeCoffeeDate} android_ripple={styles.footerRippling}>
+        <Pressable onPress={removeCoffeeDate} android_ripple={styles.coffeeCharRippling}>
           <AntDesign 
           name='minuscircle'
           size={36} 

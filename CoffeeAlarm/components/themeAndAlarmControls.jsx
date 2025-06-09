@@ -1,6 +1,6 @@
-import { Text, View, Appearance, SafeAreaView, Pressable, StyleSheet } from "react-native";
+import { View, Pressable } from "react-native";
 import { Link } from "expo-router";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
 import { DateContext } from "@/context/DateContext";
 import { DayContext, defaultDays } from "@/context/DayContext"

@@ -20,7 +20,7 @@ const days = {
 }
 
 export default function Schedule() {
-  const { highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDates, setCoffeeDate, nearestDate, setNearestDate } = useContext(DateContext) // change this context into their individual context
+  const { highestCoffeeId, setCoffeeId, coffeeDates, setCoffeeDate, nearestDate, setNearestDate } = useContext(DateContext) // change this context into their individual context
   const { setIsAdding } = useContext(DayContext)
   const router = useRouter()
   const styles = useStyles()
@@ -53,8 +53,6 @@ export default function Schedule() {
     setCoffeeDate(selectedCoffeeDate)
     router.push(`/dates/${dateId}`)
   }
-
-  let x = 11
 
   // renders each individual coffeeDate in coffeeDates
   const coffeeDateRenderer = ({ item }) => {

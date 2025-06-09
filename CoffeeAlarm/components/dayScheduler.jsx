@@ -25,7 +25,7 @@ function DayScheduler() {
     // renders the day array and its style
     const renderDayItem = useCallback(({ item }) => (
       <View>
-        <Pressable onPress={() => handleDayPress(item)} style={styles.dayButton}>
+        <Pressable onPress={() => handleDayPress(item)} style={styles.dayButton} android_ripple={styles.coffeeCharRippling}>
           <Text style={[styles.dayText, item.set && styles.selectedDayText]}>
             {item.name}
           </Text>
